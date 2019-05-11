@@ -37,12 +37,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     if(passwordString.equals(confirmPasswordString)) {
-                        Boolean checkmail= db.checkMail(emailString);
-                        if (checkmail==true){
-                            /*Intent j=new Intent(MainActivity.this,personal_details_register.class);
-                            j.putExtra("EMAIL ID",emailString);
-                            j.putExtra("PASSWORD",passwordString);
-                            startActivity(j);*/
+                        Boolean checkMail= db.checkMail(emailString);
+                        if (checkMail==true){
+                            Intent toPersonalDetailsRegisterIntent=new Intent(MainActivity.this,PersonalDetailsRegister.class);
+                            toPersonalDetailsRegisterIntent.putExtra("EMAIL ID",emailString);
+                            toPersonalDetailsRegisterIntent.putExtra("PASSWORD",passwordString);
+                            startActivity(toPersonalDetailsRegisterIntent);
                         }
                         else {
                             Toast.makeText(getApplicationContext(),"Account already exists",Toast.LENGTH_SHORT).show();
@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         loginInsteadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent i=new Intent(MainActivity.this,Login.class);
-                startActivity(i);*/
+                Intent loginInsteadIntent=new Intent(MainActivity.this,Login.class);
+                startActivity(loginInsteadIntent);
             }
         });
     }

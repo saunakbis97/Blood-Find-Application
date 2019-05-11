@@ -14,7 +14,7 @@ class DatabaseHelper1 extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("Create table user(email text primary key, password text,name text, mobileno text,address text,bloodgroup text)");
+        db.execSQL("Create table user(email text primary key, password text,name text, mobileno text,address text,bloodgroup text, category text)");
     }
 
     @Override
@@ -32,6 +32,7 @@ class DatabaseHelper1 extends SQLiteOpenHelper {
         contentValues.put("mobileno",mobileno);
         contentValues.put("address",address);
         contentValues.put("bloodgroup",bloodgroup);
+        contentValues.put("category","NONE");
         long insert = db.insert("user",null,contentValues);
         if(insert == -1)
         {
@@ -68,5 +69,15 @@ class DatabaseHelper1 extends SQLiteOpenHelper {
         else {
             return false;
         }
+    }
+
+    //changing category in homepage
+    public boolean changeCategory(String email,String category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("email",email);
+        contentValues.put("category",category);
+        db.update("user",contentValues,"email=?",new String[] {email});
+        return true;
     }
 }
