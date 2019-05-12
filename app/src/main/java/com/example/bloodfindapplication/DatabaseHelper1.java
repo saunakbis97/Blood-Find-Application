@@ -80,4 +80,10 @@ class DatabaseHelper1 extends SQLiteOpenHelper {
         db.update("user",contentValues,"email=?",new String[] {email});
         return true;
     }
+
+    public Cursor getCategory(String emailString) {
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor categoryCursor = db.rawQuery("select category from user where email=?",new String[]{emailString});
+        return categoryCursor;
+    }
 }
