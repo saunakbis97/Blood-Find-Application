@@ -21,7 +21,7 @@
         android:id="@+id/radioGroupStatus"
         android:layout_width="173dp"
         android:layout_height="109dp"
-        android:layout_marginTop="194dp"
+        android:layout_marginTop="148dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -52,7 +52,7 @@
         android:id="@+id/homepageSearchButton"
         android:layout_width="121dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="148dp"
         android:text="SEARCH"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

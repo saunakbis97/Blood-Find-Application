@@ -86,4 +86,18 @@ class DatabaseHelper1 extends SQLiteOpenHelper {
         Cursor categoryCursor = db.rawQuery("select category from user where email=?",new String[]{emailString});
         return categoryCursor;
     }
+
+    public Cursor getSearchResults(String email,String categoryValue) {
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor bloodGroupCursor = db.rawQuery("select bloodgroup from user where email=?",new String[]{email});
+        if(bloodGroupCursor!= null) {
+            bloodGroupCursor.moveToFirst();
+        }
+        String bloodGroupFromdb;
+        do{
+            bloodGroupFromdb = bloodGroupCursor.getString(0);
+        }while (bloodGroupCursor.moveToNext());
+        Cursor searchCursor = db.rawQuery("select name,email from user where category=? and bloodgroup=?",new String[]{categoryValue,bloodGroupFromdb});
+        return searchCursor;
+    }
 }

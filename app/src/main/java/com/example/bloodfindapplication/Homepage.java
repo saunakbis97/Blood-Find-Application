@@ -5,9 +5,12 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ public class Homepage extends AppCompatActivity {
     DatabaseHelper1 db=new DatabaseHelper1(this);
     Cursor categoryCursor;
     String initialCategoryData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,16 +85,20 @@ public class Homepage extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*int selectedCategoryId = categoriesGroup.getCheckedRadioButtonId();
-                radioButton = (RadioButton)findViewById(selectedCategoryId);*/
                 if (categoryDataFromDB(email).equals("NONE")) {
                     Toast.makeText(Homepage.this, "Change choice to search", Toast.LENGTH_SHORT).show();
                 }
                 else if(categoryDataFromDB(email).equals("DONOR")) {
                     Toast.makeText(Homepage.this, "Showing Blood Donors", Toast.LENGTH_SHORT).show();
+                    Intent toSearchAsDonorPageIntent=new Intent(Homepage.this,SearchAsDonorPage.class);
+                    toSearchAsDonorPageIntent.putExtra("EMAIL ID",email);
+                    startActivity(toSearchAsDonorPageIntent);
                 }
                 else if(categoryDataFromDB(email).equals("RECEIVER")) {
                     Toast.makeText(Homepage.this, "Showing Blood Receivers", Toast.LENGTH_SHORT).show();
+                    Intent toSearchAsReceiverPageIntent=new Intent(Homepage.this,SearchAsReceiverPage.class);
+                    toSearchAsReceiverPageIntent.putExtra("EMAIL ID",email);
+                    startActivity(toSearchAsReceiverPageIntent);
                 }
             }
         });
@@ -109,4 +117,5 @@ public class Homepage extends AppCompatActivity {
         categoryTextView.setText(categoryFromdb);
         return categoryFromdb;
     }
+
 }
