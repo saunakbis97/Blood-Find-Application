@@ -86,6 +86,9 @@ public class SearchAsReceiverPage extends AppCompatActivity {
                 String emailString;
                 emailString=concatenatedString.substring((concatenatedString.lastIndexOf("(")) + 1 ,concatenatedString.lastIndexOf(")") );
                 Toast.makeText(getApplicationContext(),emailString,Toast.LENGTH_SHORT).show();
+                Intent toSearchInformationPage = new Intent(SearchAsReceiverPage.this,SearchToInformationPage.class);
+                toSearchInformationPage.putExtra("EMAIL ID",emailString);
+                startActivity(toSearchInformationPage);
             }
         });
     }
