@@ -52,11 +52,12 @@ public class SearchAsDonorPage extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String concatenatedString = donorListView.getItemAtPosition(position).toString();
-                String emailString;
-                emailString=concatenatedString.substring((concatenatedString.lastIndexOf("(")) + 1 ,concatenatedString.lastIndexOf(")") );
-                Toast.makeText(getApplicationContext(),emailString,Toast.LENGTH_SHORT).show();
+                String searchedEmailString;
+                searchedEmailString=concatenatedString.substring((concatenatedString.lastIndexOf("(")) + 1 ,concatenatedString.lastIndexOf(")") );
+                Toast.makeText(getApplicationContext(),searchedEmailString,Toast.LENGTH_SHORT).show();
                 Intent toSearchInformationPage = new Intent(SearchAsDonorPage.this,SearchToInformationPage.class);
-                toSearchInformationPage.putExtra("EMAIL ID",emailString);
+                toSearchInformationPage.putExtra("USER EMAIL ID",emailString);
+                toSearchInformationPage.putExtra("SEARCHED EMAIL ID",searchedEmailString);
                 startActivity(toSearchInformationPage);
             }
         });
