@@ -54,4 +54,10 @@ public class DatabaseHelper2 extends SQLiteOpenHelper {
             return true;
         }
     }
+
+    public Cursor getActivitiesSearchResults(String emailString) {
+        SQLiteDatabase db2=this.getReadableDatabase();
+        Cursor activitySearchCursor = db2.rawQuery("select activityno,fromemail,toemail,activitystatus from activities where fromemail=? or toemail=?",new String[]{emailString,emailString});
+        return activitySearchCursor;
+    }
 }

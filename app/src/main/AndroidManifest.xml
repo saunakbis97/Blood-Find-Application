@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchToInformationPage"></activity>
+        <activity android:name=".ActivitiesPage"></activity>
+        <activity android:name=".SearchToInformationPage" />
         <activity android:name=".SearchAsDonorPage" />
         <activity android:name=".SearchAsReceiverPage" />
         <activity android:name=".PersonalDetailsRegister" />

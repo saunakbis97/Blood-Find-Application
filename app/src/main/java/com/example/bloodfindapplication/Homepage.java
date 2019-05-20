@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -21,6 +22,7 @@ public class Homepage extends AppCompatActivity {
     DatabaseHelper1 db=new DatabaseHelper1(this);
     Cursor categoryCursor;
     String initialCategoryData;
+    ImageButton activitiesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,9 @@ public class Homepage extends AppCompatActivity {
         }
 
         onClickListenerButton(emailString);
+
+        toActivitiesPage(emailString);
+
     }
 
     public void onClickListenerButton(final String email) {
@@ -116,6 +121,18 @@ public class Homepage extends AppCompatActivity {
         }while (categoryCursor.moveToNext());
         categoryTextView.setText(categoryFromdb);
         return categoryFromdb;
+    }
+
+    public void toActivitiesPage(final String emailString) {
+        activitiesButton = (ImageButton) findViewById(R.id.activityManageButton);
+        activitiesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toActivitiesPageIntent = new Intent(Homepage.this,ActivitiesPage.class);
+                toActivitiesPageIntent.putExtra("EMAIL ID",emailString);
+                startActivity(toActivitiesPageIntent);
+            }
+        });
     }
 
 }
