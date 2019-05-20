@@ -66,4 +66,11 @@ public class DatabaseHelper2 extends SQLiteOpenHelper {
         Cursor activitySearchCursor = db2.rawQuery("select activityno,fromemail,toemail,activitystatus from activities where activityno=?",new String[]{activityNoClicked});
         return activitySearchCursor;
     }
+
+    public void updateActivityStatus(String activityNoUpdated,String newStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("activitystatus",newStatus);
+        db.update("activities",contentValues,"activityno=?",new String[] {activityNoUpdated});
+    }
 }

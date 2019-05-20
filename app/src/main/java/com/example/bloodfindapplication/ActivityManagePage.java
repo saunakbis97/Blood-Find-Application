@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class ActivityManagePage extends AppCompatActivity {
@@ -63,76 +65,217 @@ public class ActivityManagePage extends AppCompatActivity {
         }while (informationCursor.moveToNext());
     }
 
-    private void setActivityInformation(Cursor getActivityInformationCursor, String emailString) {
+    private void setActivityInformation(final Cursor getActivityInformationCursor, String emailString) {
 
+        final DatabaseHelper2 db2=new DatabaseHelper2(this);
         TextView activityNoValueTextView = (TextView) findViewById(R.id.activityNoValueTextView);
         activityNoValueTextView.setText(getActivityInformationCursor.getString(0));
 
-        TextView yourActivityStatusValueTextView = (TextView) findViewById(R.id.yourActivityStatusValueTextView);
+        final TextView yourActivityStatusValueTextView = (TextView) findViewById(R.id.yourActivityStatusValueTextView);
         TextView inActivityCategoryValueTextView = (TextView) findViewById(R.id.inActivityCategoryValueTextView);
         if((getActivityInformationCursor.getString(3)).equals("OFFER SENT") && (getActivityInformationCursor.getString(1)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("RECEIVER");
             yourActivityStatusValueTextView.setText("OUTGOING OFFER SENT");
+            setAllButtonEnabled(false,true,false);
+            setAllButtonVisible(false,true,false);
+            Button cancelButton = (Button) findViewById(R.id.cancelButton);
+            cancelButton.setText("CANCEL OFFER");
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivityInformationCursor.moveToFirst();
+                    db2.updateActivityStatus(getActivityInformationCursor.getString(0),"OFFER CANCELLED");
+                    yourActivityStatusValueTextView.setText("OUTGOING OFFER CANCELLED");
+                    setAllButtonEnabled(false,false,false);
+                    setAllButtonVisible(false,false,false);
+                }
+            });
         }
         else if((getActivityInformationCursor.getString(3)).equals("OFFER SENT") && (getActivityInformationCursor.getString(2)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("DONOR");
             yourActivityStatusValueTextView.setText("INCOMING OFFER RECEIVED");
+            setAllButtonEnabled(true,false,true);
+            setAllButtonVisible(true,false,true);
+            Button acceptButton = (Button) findViewById(R.id.acceptButton);
+            Button declineButton = (Button) findViewById(R.id.declineButton);
+            acceptButton.setText("ACCEPT OFFER");
+            declineButton.setText("DECLINE OFFER");
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivityInformationCursor.moveToFirst();
+                    db2.updateActivityStatus(getActivityInformationCursor.getString(0),"OFFER ACCEPTED");
+                    yourActivityStatusValueTextView.setText("INCOMING OFFER ACCEPTED");
+                    setAllButtonEnabled(false,false,false);
+                    setAllButtonVisible(false,false,false);
+                }
+            });
+            declineButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivityInformationCursor.moveToFirst();
+                    db2.updateActivityStatus(getActivityInformationCursor.getString(0),"OFFER DECLINED");
+                    yourActivityStatusValueTextView.setText("INCOMING OFFER DECLINED");
+                    setAllButtonEnabled(false,false,false);
+                    setAllButtonVisible(false,false,false);
+                }
+            });
         }
         else if((getActivityInformationCursor.getString(3)).equals("REQUEST SENT") && (getActivityInformationCursor.getString(1)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("DONOR");
             yourActivityStatusValueTextView.setText("OUTGOING REQUEST SENT");
+            setAllButtonEnabled(false,true,false);
+            setAllButtonVisible(false,true,false);
+            Button cancelButton = (Button) findViewById(R.id.cancelButton);
+            cancelButton.setText("CANCEL REQUEST");
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivityInformationCursor.moveToFirst();
+                    db2.updateActivityStatus(getActivityInformationCursor.getString(0),"REQUEST CANCELLED");
+                    yourActivityStatusValueTextView.setText("OUTGOING REQUEST CANCELLED");
+                    setAllButtonEnabled(false,false,false);
+                    setAllButtonVisible(false,false,false);
+                }
+            });
         }
         else if((getActivityInformationCursor.getString(3)).equals("REQUEST SENT") && (getActivityInformationCursor.getString(2)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("RECEIVER");
             yourActivityStatusValueTextView.setText("INCOMING REQUEST RECEIVED");
+            setAllButtonEnabled(true,false,true);
+            setAllButtonVisible(true,false,true);
+            Button acceptButton = (Button) findViewById(R.id.acceptButton);
+            Button declineButton = (Button) findViewById(R.id.declineButton);
+            acceptButton.setText("ACCEPT REQUEST");
+            declineButton.setText("DECLINE REQUEST");
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivityInformationCursor.moveToFirst();
+                    db2.updateActivityStatus(getActivityInformationCursor.getString(0),"REQUEST ACCEPTED");
+                    yourActivityStatusValueTextView.setText("INCOMING REQUEST ACCEPTED");
+                    setAllButtonEnabled(false,false,false);
+                    setAllButtonVisible(false,false,false);
+                }
+            });
+            declineButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivityInformationCursor.moveToFirst();
+                    db2.updateActivityStatus(getActivityInformationCursor.getString(0),"REQUEST DECLINED");
+                    yourActivityStatusValueTextView.setText("INCOMING REQUEST DECLINED");
+                    setAllButtonEnabled(false,false,false);
+                    setAllButtonVisible(false,false,false);
+                }
+            });
         }
         else if((getActivityInformationCursor.getString(3)).equals("OFFER ACCEPTED") && (getActivityInformationCursor.getString(1)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("RECEIVER");
             yourActivityStatusValueTextView.setText("OUTGOING OFFER ACCEPTED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
         }
         else if((getActivityInformationCursor.getString(3)).equals("OFFER ACCEPTED") && (getActivityInformationCursor.getString(2)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("DONOR");
             yourActivityStatusValueTextView.setText("INCOMING OFFER ACCEPTED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
         }
         else if((getActivityInformationCursor.getString(3)).equals("REQUEST ACCEPTED") && (getActivityInformationCursor.getString(1)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("DONOR");
             yourActivityStatusValueTextView.setText("OUTGOING REQUEST ACCEPTED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
         }
         else if((getActivityInformationCursor.getString(3)).equals("REQUEST ACCEPTED") && (getActivityInformationCursor.getString(2)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("RECEIVER");
             yourActivityStatusValueTextView.setText("INCOMING REQUEST ACCEPTED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
         }
         else if((getActivityInformationCursor.getString(3)).equals("OFFER CANCELLED") && (getActivityInformationCursor.getString(1)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("RECEIVER");
             yourActivityStatusValueTextView.setText("OUTGOING OFFER CANCELLED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
         }
         else if((getActivityInformationCursor.getString(3)).equals("OFFER CANCELLED") && (getActivityInformationCursor.getString(2)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("DONOR");
             yourActivityStatusValueTextView.setText("INCOMING OFFER CANCELLED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
         }
         else if((getActivityInformationCursor.getString(3)).equals("REQUEST CANCELLED") && (getActivityInformationCursor.getString(1)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("DONOR");
             yourActivityStatusValueTextView.setText("OUTGOING REQUEST CANCELLED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
         }
         else if((getActivityInformationCursor.getString(3)).equals("REQUEST CANCELLED") && (getActivityInformationCursor.getString(2)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("RECEIVER");
             yourActivityStatusValueTextView.setText("INCOMING REQUEST CANCELLED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
         }
         else if((getActivityInformationCursor.getString(3)).equals("OFFER DECLINED") && (getActivityInformationCursor.getString(1)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("RECEIVER");
             yourActivityStatusValueTextView.setText("OUTGOING OFFER DECLINED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
         }
         else if((getActivityInformationCursor.getString(3)).equals("OFFER DECLINED") && (getActivityInformationCursor.getString(2)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("DONOR");
             yourActivityStatusValueTextView.setText("INCOMING OFFER DECLINED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
         }
         else if((getActivityInformationCursor.getString(3)).equals("REQUEST DECLINED") && (getActivityInformationCursor.getString(1)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("DONOR");
             yourActivityStatusValueTextView.setText("OUTGOING REQUEST DECLINED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
         }
         else if((getActivityInformationCursor.getString(3)).equals("REQUEST DECLINED") && (getActivityInformationCursor.getString(2)).equals(emailString)) {
             inActivityCategoryValueTextView.setText("RECEIVER");
             yourActivityStatusValueTextView.setText("INCOMING REQUEST DECLINED");
+            setAllButtonEnabled(false,false,false);
+            setAllButtonVisible(false,false,false);
+        }
+    }
+    private void setAllButtonEnabled(Boolean isEnabledButton1,Boolean isEnabledButton2,Boolean isEnabledButton3) {
+        Button acceptButton = (Button) findViewById(R.id.acceptButton);
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
+        Button declineButton = (Button) findViewById(R.id.declineButton);
+
+        acceptButton.setEnabled(isEnabledButton1);
+        cancelButton.setEnabled(isEnabledButton2);
+        declineButton.setEnabled(isEnabledButton3);
+    }
+
+    private void setAllButtonVisible(Boolean isVisibleButton1,Boolean isVisibleButton2,Boolean isVisibleButton3) {
+        Button acceptButton = (Button) findViewById(R.id.acceptButton);
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
+        Button declineButton = (Button) findViewById(R.id.declineButton);
+
+        if (isVisibleButton1 == true) {
+            acceptButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            acceptButton.setVisibility(View.INVISIBLE);
+        }
+
+        if (isVisibleButton2 == true) {
+            cancelButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            cancelButton.setVisibility(View.INVISIBLE);
+        }
+
+        if (isVisibleButton3 == true) {
+            declineButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            declineButton.setVisibility(View.INVISIBLE);
         }
     }
 }
