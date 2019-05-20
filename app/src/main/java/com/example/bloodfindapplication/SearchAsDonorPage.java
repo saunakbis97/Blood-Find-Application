@@ -33,19 +33,22 @@ public class SearchAsDonorPage extends AppCompatActivity {
         donorListView = (ListView) findViewById(R.id.donorListView);
         Cursor searchCursor = db.getSearchResults(emailString,"RECEIVER");
         donorList = new ArrayList<>();
-
-        if(searchCursor != null) {
-            searchCursor.moveToFirst();
+        if(searchCursor.getCount()>0) {
+            if (searchCursor != null) {
+                searchCursor.moveToFirst();
+            }
+            do {
+                StringBuilder concatStringBuilder = new StringBuilder();
+                concatStringBuilder.append(searchCursor.getString(0));
+                concatStringBuilder.append("(");
+                concatStringBuilder.append(searchCursor.getString(1));
+                concatStringBuilder.append(")");
+                donorList.add(concatStringBuilder.toString());
+            } while (searchCursor.moveToNext());
         }
-        do{
-            StringBuilder concatStringBuilder=new StringBuilder();
-            concatStringBuilder.append(searchCursor.getString(0));
-            concatStringBuilder.append("(");
-            concatStringBuilder.append(searchCursor.getString(1));
-            concatStringBuilder.append(")");
-            donorList.add(concatStringBuilder.toString());
-        }while (searchCursor.moveToNext());
-
+        else {
+            Toast.makeText(getApplicationContext(),"Search Results are empty",Toast.LENGTH_SHORT).show();
+        }
         ArrayAdapter<String> adapter =new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,donorList);
         donorListView.setAdapter(adapter);
         donorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

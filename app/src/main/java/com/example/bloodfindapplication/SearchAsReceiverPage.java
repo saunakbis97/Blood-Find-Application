@@ -28,35 +28,6 @@ public class SearchAsReceiverPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_as_receiver_page);
 
-       /* receiverListView = (ListView) findViewById(R.id.receiverListView);
-
-        receiverList = new ArrayList<>();
-        receiverList.add("ONE");
-        receiverList.add("TWO");
-        receiverList.add("THREE");
-        receiverList.add("FOUR");
-        receiverList.add("FIVE");
-        receiverList.add("SIX");
-        receiverList.add("SEVEN");
-        receiverList.add("EIGHT");
-        receiverList.add("NINE");
-        receiverList.add("TEN");
-        receiverList.add("ELEVEN");
-        receiverList.add("TWELVE");
-        receiverList.add("THIRTEEN");
-        receiverList.add("FOURTEEN");
-        receiverList.add("FIFTEEN");
-        ArrayAdapter<String> adapter =new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,receiverList);
-        receiverListView.setAdapter(adapter);
-
-        receiverListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String text = receiverListView.getItemAtPosition(position).toString();
-                Toast.makeText(getApplicationContext(),Integer.toString(position),Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
 
         DatabaseHelper1 db=new DatabaseHelper1(this);
         Intent prevIntent = getIntent();
@@ -64,19 +35,22 @@ public class SearchAsReceiverPage extends AppCompatActivity {
         receiverListView = (ListView) findViewById(R.id.receiverListView);
         Cursor searchCursor = db.getSearchResults(emailString,"DONOR");
         receiverList = new ArrayList<>();
-
-        if(searchCursor != null) {
-            searchCursor.moveToFirst();
+        if (searchCursor.getCount()>0) {
+            if (searchCursor != null) {
+                searchCursor.moveToFirst();
+            }
+            do {
+                StringBuilder concatStringBuilder = new StringBuilder();
+                concatStringBuilder.append(searchCursor.getString(0));
+                concatStringBuilder.append("(");
+                concatStringBuilder.append(searchCursor.getString(1));
+                concatStringBuilder.append(")");
+                receiverList.add(concatStringBuilder.toString());
+            } while (searchCursor.moveToNext());
         }
-        do{
-            StringBuilder concatStringBuilder=new StringBuilder();
-            concatStringBuilder.append(searchCursor.getString(0));
-            concatStringBuilder.append("(");
-            concatStringBuilder.append(searchCursor.getString(1));
-            concatStringBuilder.append(")");
-            receiverList.add(concatStringBuilder.toString());
-        }while (searchCursor.moveToNext());
-
+        else {
+            Toast.makeText(getApplicationContext(),"Search Results are empty",Toast.LENGTH_SHORT).show();
+        }
         ArrayAdapter<String> adapter =new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,receiverList);
         receiverListView.setAdapter(adapter);
         receiverListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
