@@ -24,7 +24,7 @@ public class ActivitiesPage extends AppCompatActivity {
         DatabaseHelper1 db=new DatabaseHelper1(this);
         DatabaseHelper2 db2=new DatabaseHelper2(this);
         Intent prevIntent = getIntent();
-        String emailString = prevIntent.getStringExtra("EMAIL ID");
+        final String emailString = prevIntent.getStringExtra("EMAIL ID");
         Cursor activitySearchCursor = db2.getActivitiesSearchResults(emailString);
         activitiesListView =(ListView) findViewById(R.id.activitiesListView);
         activitiesList =new ArrayList<>();
@@ -79,8 +79,17 @@ public class ActivitiesPage extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String concatenatedString = activitiesListView.getItemAtPosition(position).toString();
-                Toast.makeText(getApplicationContext(),concatenatedString,Toast.LENGTH_SHORT).show();
+                String activityNoClicked = concatenatedString.substring((concatenatedString.lastIndexOf("(")) + 1 ,concatenatedString.lastIndexOf(")") );
+                goToActivityManagePage(emailString,activityNoClicked);
+
             }
         });
+    }
+
+    private void goToActivityManagePage(String emailString, String activityNoClicked) {
+        Intent toActivityManagePageIntent = new Intent(ActivitiesPage.this,ActivityManagePage.class);
+        toActivityManagePageIntent.putExtra("USER EMAIL ID",emailString);
+        toActivityManagePageIntent.putExtra("CLICKED ACTIVITY NO",activityNoClicked);
+        startActivity(toActivityManagePageIntent);
     }
 }
